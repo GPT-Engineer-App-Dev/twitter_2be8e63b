@@ -1,0 +1,51 @@
+import React, { useState } from "react";
+import { Box, Flex, Avatar, Input, IconButton, Button, Text, Divider } from "@chakra-ui/react";
+import { FaRegImage, FaRegSmile } from "react-icons/fa";
+
+const Index = () => {
+  const [tweets, setTweets] = useState([]);
+  const [newTweet, setNewTweet] = useState("");
+
+  const handleTweetSubmit = (e) => {
+    e.preventDefault();
+    if (newTweet.trim()) {
+      setTweets([{ id: Date.now(), text: newTweet, image: null }, ...tweets]);
+      setNewTweet("");
+    }
+  };
+
+  return (
+    <Box maxW="md" mx="auto" py={8}>
+      <form onSubmit={handleTweetSubmit}>
+        <Flex align="center">
+          <Avatar src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHx1c2VyJTIwYXZhdGFyfGVufDB8fHx8MTcxMDAyMTA1OXww&ixlib=rb-4.0.3&q=80&w=1080" size="sm" mr={4} />
+          <Input placeholder="What's happening?" value={newTweet} onChange={(e) => setNewTweet(e.target.value)} />
+          <IconButton aria-label="Add image" icon={<FaRegImage />} ml={2} isDisabled />
+        </Flex>
+        <Flex justify="space-between" mt={4}>
+          <IconButton aria-label="Add emoji" icon={<FaRegSmile />} isDisabled />
+          <Button type="submit" colorScheme="blue" isDisabled={!newTweet.trim()}>
+            Tweet
+          </Button>
+        </Flex>
+      </form>
+      <Box mt={8}>
+        {tweets.map((tweet) => (
+          <Box key={tweet.id} mt={4}>
+            <Flex align="center">
+              <Avatar src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwyfHx1c2VyJTIwYXZhdGFyfGVufDB8fHx8MTcxMDAyMTA1OXww&ixlib=rb-4.0.3&q=80&w=1080" size="sm" mr={4} />
+              <Box>
+                <Text fontWeight="bold">John Doe</Text>
+                <Text>{tweet.text}</Text>
+                {tweet.image && <Image src={tweet.image} alt="Tweet image" maxW="300px" mt={2} />}
+              </Box>
+            </Flex>
+            <Divider mt={4} />
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+};
+
+export default Index;
